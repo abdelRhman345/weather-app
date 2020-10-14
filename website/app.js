@@ -1,5 +1,4 @@
 /* Global Variables */
-
 // Personal API Key for OpenWeatherMap API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 const apiKey = 'ad7265300ff8ce803f04e627361f89ff';
@@ -18,8 +17,8 @@ function performAction(e) {
   const content = document.getElementById('feelings').value;
 
   getWeather(baseURL, newZip, apiKey)
-    .then(function (userData) {
-      postData('/add', { date: newDate, temp: userData.main.temp, content })
+    .then(function (user) {
+      postData('/add', { date: newDate, temp: user.main.temp, content })
     }).then(function (newData) {
       updateUI()
     })
@@ -29,8 +28,8 @@ function performAction(e) {
 const getWeather = async (baseURL, newZip, apiKey) => {
   const res = await fetch(baseURL+newZip+apiKey);
   try {
-    const userData = await res.json();
-    return userData;
+    const user = await res.json();
+    return user;
   } catch (error) {
     console.log("error", error);
   }
