@@ -1,10 +1,8 @@
 /* Global Variables */
-const form = document.querySelector('.app__form');
-const icons = document.querySelectorAll('.entry__icon');
 
-// Base URL and API Key for OpenWeatherMap API
+// Personal API Key for OpenWeatherMap API
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = '&appid=5beb43e13dc3fa8be428191e6e50a00c';
+const apiKey = 'ad7265300ff8ce803f04e627361f89ff';
 
 //Get the date
 let d = new Date();
@@ -16,28 +14,21 @@ document.getElementById('generate').addEventListener('click', performAction);
 /* Function called by event listener */
 function performAction(e) {
   e.preventDefault();
-  // get user input values
   const newZip = document.getElementById('zip').value;
   const content = document.getElementById('feelings').value;
 
   getWeather(baseURL, newZip, apiKey)
     .then(function (userData) {
-      // add data to POST request
       postData('/add', { date: newDate, temp: userData.main.temp, content })
     }).then(function (newData) {
-      // call updateUI to update browser content
       updateUI()
     })
-  // reset form
-  form.reset();
 }
 
 /* Function to GET Web API Data*/
 const getWeather = async (baseURL, newZip, apiKey) => {
-  // res equals to the result of fetch function
-  const res = await fetch(baseURL + newZip + apiKey);
+  const res = await fetch(baseURL+newZip+apiKey);
   try {
-    // userData equals to the result of fetch function
     const userData = await res.json();
     return userData;
   } catch (error) {
@@ -69,14 +60,11 @@ const postData = async (url = '', data = {}) => {
   }
 };
 
-
+/* Function to GET Project Data */
 const updateUI = async () => {
   const request = await fetch('/all');
   try {
     const allData = await request.json()
-    // show icons on the page
-    icons.forEach(icon => icon.style.opacity = '1');
-    // update new entry values
     document.getElementById('date').innerHTML = allData.date;
     document.getElementById('temp').innerHTML = allData.temp;
     document.getElementById('content').innerHTML = allData.content;
